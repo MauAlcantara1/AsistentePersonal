@@ -1,0 +1,65 @@
+# Agnes 
+
+Asistente personal modular desarrollado en Python.
+
+Agnes es un proyecto personal orientado al desarrollo de un asistente capaz de interactuar mediante voz, reconocer intenciones, responder al usuario y utilizar visión por computadora para identificar personas.
+
+> **Versión actual: 0.1**
+
+---
+
+##  Características actuales
+
+La versión 0.1 cuenta con los siguientes módulos:
+
+###  Voz a texto
+
+Utiliza **Faster-Whisper** para convertir la entrada de voz del usuario en texto.
+
+Flujo:
+
+Usuario habla → captura de audio → transcripción → texto
+
+---
+
+###  Texto a voz
+
+Utiliza **Edge TTS** para convertir las respuestas de Agnes a voz.
+
+Actualmente utiliza una voz neuronal en español de México.
+
+Flujo:
+
+Texto → Edge TTS → audio → reproducción
+
+---
+
+###  Detección de intenciones
+
+Agnes analiza el texto recibido y determina qué acción solicita el usuario.
+
+Actualmente utiliza:
+
+- TF-IDF
+- Cosine Similarity
+- RapidFuzz como fallback
+- Preprocesamiento y normalización de texto
+
+Algunas intenciones disponibles:
+
+- Ver tareas
+- Añadir tareas
+- Quitar tareas
+- Reproducir música
+- Buscar vídeos en YouTube
+- Buscar información
+- Saludos
+
+Ejemplo:
+
+```text
+Usuario: Añade la tarea de estudiar Python a la base.
+
+Intención detectada: ANADIR_TAREAS
+Confianza: 0.83
+Requiere confirmación: True
