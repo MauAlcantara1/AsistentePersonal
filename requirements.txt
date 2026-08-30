@@ -1,7 +1,10 @@
+sounddevice==0.5.6
 numpy==2.5.2
+faster-whisper==1.2.1
+edge-tts==7.2.8
 opencv-python==5.0.0.93
+psycopg==3.3.4
+python-dotenv==1.2.3
 scikit-learn==1.9.0
 RapidFuzz==3.14.5
-edge-tts==7.2.8
-faster-whisper==1.2.1
-sounddevice==0.5.6
+google-genai==2.20.0

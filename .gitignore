@@ -79,3 +79,11 @@ Thumbs.db
 # =========================
 *.tmp
 *.temp
+
+# =========================
+# Temporales
+# =========================
+*.tmp
+*.temp
+temp_transcripcion.txt
+tem_transcripcion.txt
