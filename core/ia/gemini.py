@@ -17,26 +17,32 @@ load_dotenv()
 
 def generar_prompt_para_nueva_materia(client, nombre_materia):
     meta_prompt = f"""
-Eres un diseñador de arquitecturas de toma de notas académicas.
-El usuario va a tomar apuntes sobre la materia/área: "{nombre_materia}".
+Eres un diseñador experto en arquitecturas de toma de notas e instruccionales.
+El usuario procesará una clase de la materia/área: "{nombre_materia}".
 
-Genera una lista breve de instrucciones (de 5 a 8 puntos) sobre qué elementos específicos
-debe estructurar y priorizar un asistente al procesar clases de esta materia.
+Analiza la naturaleza de "{nombre_materia}" e identifica los 5 a 8 elementos críticos indispensables que el asistente debe priorizar al tomar notas de esta materia en específico. 
 
-Ejemplo de estructura esperada:
+Reglas de adaptación:
+- Si es una materia práctica o de código/sistemas: prioriza arquitecturas, comandos, código, librerías y lógica de implementación.
+- Si es una materia matemática o de modelado: prioriza notación formal, variables, derivaciones, teoremas, fórmulas y casos de borde.
+- Si es una materia conceptual o teórica: prioriza definiciones, analogías, modelos mentales, taxonomías y comparativas.
+
+Genera la respuesta adaptada con el siguiente formato estricto:
+
 La materia es {nombre_materia}.
 Organiza especialmente:
-- Conceptos y definiciones clave.
-- [Aspecto técnico 1 de la materia]
-- [Aspecto técnico 2 de la materia]
-- Ejemplos explicados por el profesor.
-- Fórmulas, algoritmos o código si aparecen.
+- **[Elemento clave adaptado 1]:** [Descripción breve de qué extraer exactamente en esta materia].
+- **[Elemento clave adaptado 2]:** [Descripción breve de qué extraer exactamente en esta materia].
+- **[Elemento clave adaptado 3]:** [Descripción breve de qué extraer exactamente en esta materia].
+- **[Elemento clave adaptado 4]:** [Descripción breve de qué extraer exactamente en esta materia].
+- **[Elemento clave adaptado 5]:** [Descripción breve de qué extraer exactamente en esta materia].
+- **[Elemento clave adaptado 6 (opcional)]:** [Descripción breve].
 
-Responde ÚNICAMENTE con la lista de instrucciones, sin introducciones ni saludos.
+Responde ÚNICAMENTE con la lista de instrucciones, sin introducciones, explicaciones previas ni saludos.
 """
     try:
         response = client.models.generate_content(
-            model="gemini-3.8-flash",
+            model="gemini-3.6-flash",
             contents=meta_prompt
         )
         prompt_generado = response.text.strip()
@@ -91,7 +97,7 @@ TRANSCRIPCIÓN:
     for intento in range(1, retries + 1):
         try:
             response = client.models.generate_content(
-                model="gemini-3.8-flash",
+                model="gemini-3.6-flash",
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     system_instruction=PROMPT_APUNTES_GENERAL,

@@ -2,22 +2,23 @@ from rapidfuzz import process, fuzz
 from core.base_datos.conexion import obtener_conexion
 
 PROMPT_APUNTES_GENERAL = """
-Eres un experto organizador académico de apuntes para Obsidian.
+Eres un asistente experto en procesamiento de texto académico y generación de notas de clase estructuradas. Tu objetivo es procesar la transcripción de una clase adjunta y transformarla en un documento Markdown altamente detallado, limpio y organizado.
 
-Instrucciones generales:
+Sigue estrictamente las siguientes reglas:
 
-1. Conservar las explicaciones importantes del profesor.
-2. Corregir errores evidentes del STT.
-3. Organizar la información jerárquicamente.
-4. Crear diagramas Mermaid cuando corresponda.
-5. Agregar YAML.
-6. Eliminar conversaciones o sonidos claramente ajenos a la clase.
-7. NO inventar información que no aparezca en la transcripción.
-8. Si una palabra o concepto es ambiguo y no puede corregirse mediante
-   contexto, conservarlo de la forma más fiel posible.
-9. Las preguntas relacionadas con el tema deben conservarse y organizarse.
-10. Eliminar preguntas o conversaciones que no estén relacionadas con la clase.
-11. No colocar ```markdown al inicio del documento.
+1. EXPLICACIONES CLAVE: Consolida y conserva integrales todas las explicaciones importantes, conceptos teóricos, ejemplos y aclaraciones dadas por el profesor. Es preferible mantener un nivel alto de detalle a resumir en exceso.
+2. CORRECCIÓN STT: Identifica y corrige errores evidentes de transcripción automática (Speech-to-Text), tales como palabras mal redactadas, homófonos, fallos de puntuación o jerga técnica mal transcrita, guiándote por el contexto académico.
+3. ESTRUCTURA Y JERARQUÍA: Organiza toda la información en una jerarquía clara utilizando encabezados (##, ###), listas con viñetas y bloques de código según corresponda.
+4. DIAGRAMAS MERMAID: Genera diagramas en sintaxis Mermaid (```mermaid ... ```) cuando la transcripción explique procesos, flujos de trabajo, arquitecturas, sistemas, algoritmos o jerarquías de conceptos.
+5. METADATOS EN YAML: Inicia el documento obligatoriamente con un bloque de metadatos en formato YAML al principio del archivo (frontmatter entre ---) que incluya: título de la clase, temas principales, palabras clave y fecha/módulo si se menciona.
+6. FILTRADO DE RUIDO: Elimina muletillas, interjecciones, sonidos ambientales transcritos, saludos iniciales de rutina o conversaciones casuales ajenas al tema académico.
+7. FIDELIDAD (NO INVENTAR): NO inventes, asumas ni agregues información que no esté presente o respaldada directamente por la transcripción.
+8. AMBIGÜEDAD Y DUDAS STT: Si una palabra, término técnico o concepto es ambiguo y el contexto no permite deducir la corrección exacta con certeza, consérvalo de la forma más fiel posible a como aparece transcrito.
+9. PREGUNTAS DEL TEMA: Conserva y organiza en una sección dedicada (o integradas en su respectivo tema) todas las preguntas hechas por los alumnos que estén directamente relacionadas con la materia, junto con la respuesta dada por el profesor.
+10. PREGUNTAS IRRELEVANTES: Elimina preguntas, interrupciones o discusiones que no aporten al contenido de la clase (p. ej., avisos administrativos ajenos, bromas, dudas de logística personal, risas).
+11. FORMATO DE SALIDA: Entrega únicamente el contenido del documento. NO envuelvas todo el resultado en un bloque general de ```markdown al inicio ni al final del documento.
+
+TRANSCRIPCIÓN A PROCESAR:
 """
 
 def obtener_lista_materias_db():
