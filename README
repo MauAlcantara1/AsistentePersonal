@@ -1,65 +1,87 @@
-# Agnes 
+# Agnes
 
-Asistente personal modular desarrollado en Python.
+**Agnes** es un asistente personal y académico modular desarrollado en Python, diseñado para la captura de información mediante voz, el procesamiento de intenciones y la automatización de flujos de trabajo académico.
 
-Agnes es un proyecto personal orientado al desarrollo de un asistente capaz de interactuar mediante voz, reconocer intenciones, responder al usuario y utilizar visión por computadora para identificar personas.
-
-> **Versión actual: 0.1**
+> **Versión actual: 0.3**
 
 ---
 
-##  Características actuales
+##  Objetivo del proyecto
 
-La versión 0.1 cuenta con los siguientes módulos:
-
-###  Voz a texto
-
-Utiliza **Faster-Whisper** para convertir la entrada de voz del usuario en texto.
-
-Flujo:
-
-Usuario habla → captura de audio → transcripción → texto
+Proporcionar un asistente configurable capaz de interactuar por voz, procesar peticiones cotidianas y actuar como un entorno integral de apoyo académico ("Modo Estudio"), facilitando la generación automática de notas estructuradas para Obsidian y la práctica oral de contenidos.
 
 ---
 
-###  Texto a voz
+## 🛠️ Tecnologías utilizadas
 
-Utiliza **Edge TTS** para convertir las respuestas de Agnes a voz.
-
-Actualmente utiliza una voz neuronal en español de México.
-
-Flujo:
-
-Texto → Edge TTS → audio → reproducción
+* **Lenguaje:** Python
+* **Transcripción de audio (STT):** Faster-Whisper
+* **Sintesis de voz (TTS):** Edge TTS (voz neuronal en español de México)
+* **Detección de intenciones:** TF-IDF, Cosine Similarity, RapidFuzz (fallback)
+* **Preprocesamiento de texto:** Normalización y limpieza lingüística
+* **Integración académica:** Generación de archivos Markdown orientados a la bóveda de Obsidian
 
 ---
 
-###  Detección de intenciones
+## 🧩 Módulos del sistema
 
-Agnes analiza el texto recibido y determina qué acción solicita el usuario.
+### 📱 Módulos generales (Core)
 
-Actualmente utiliza:
+#### Voz a texto (STT)
+Captura el audio de entrada del usuario y genera transcripciones precisas mediante **Faster-Whisper**.
+> *Flujo:* Usuario habla → Captura de audio → Transcripción → Texto
 
-- TF-IDF
-- Cosine Similarity
-- RapidFuzz como fallback
-- Preprocesamiento y normalización de texto
+#### Texto a voz (TTS)
+Convierte las respuestas generadas por el sistema a voz mediante **Edge TTS**.
+> *Flujo:* Texto → Edge TTS → Generación de audio → Reproducción
 
-Algunas intenciones disponibles:
+#### Detección de intenciones
+Analiza el texto transcrito para determinar la acción requerida por el usuario. Implementa TF-IDF y similitud de coseno como mecanismo principal, recurriendo a RapidFuzz en caso de baja coincidencia.
+* **Intenciones soportadas:** Consulta, adición y eliminación de tareas, control de reproducción musical, búsqueda de videos en YouTube, búsquedas generales y saludos.
 
-- Ver tareas
-- Añadir tareas
-- Quitar tareas
-- Reproducir música
-- Buscar vídeos en YouTube
-- Buscar información
-- Saludos
+---
 
-Ejemplo:
+### 📚 Módulos académicos
+
+#### 1. Modo clase (Toma de apuntes)
+Inicia una sesión de escucha para procesar la transcripción de una clase y transformarla automáticamente en apuntes estructurados para **Obsidian**.
+* **Prompts académicos adaptativos:** Aplica criterios de organización específicos según la materia seleccionada (por ejemplo, *Programación Orientada a Objetos*, *Minería de Datos*, *Estadística*).
+* **Selección de materia:** Asocia la clase a una materia particular para determinar el prompt y formato adecuado.
+
+#### 2. Configuración e integración con Obsidian
+* **Ruta de bóveda dinámica:** Permite configurar y actualizar la ubicación de la bóveda de Obsidian directamente desde la aplicación, eliminando las rutas fijas en código.
+* **Gestión de carpetas:** Creación de directorios dentro de la bóveda administrados directamente por Agnes.
+
+#### 3. Recuperación de notas (Resiliencia de datos)
+Sistema de tolerancia a fallos en el procesamiento de audio. Si ocurre un error de comunicación o procesamiento con la API al generar los apuntes, el archivo temporal de transcripción se conserva para reintentar la generación sin perder la información.
+
+#### 4. Asistente de exposiciones
+Módulo interactivo para la práctica oral de presentaciones.
+> *Flujo:* 
+> 1. Registro del tema de la exposición.
+> 2. Captura de los conceptos a evaluar.
+> 3. Escucha activa de la presentación del estudiante.
+> 4. Análisis del contenido expuesto.
+> 5. Generación de retroalimentación cualitativa para identificar puntos de mejora.
+
+---
+
+## 🔄 Flujo general de uso
 
 ```text
-Usuario: Añade la tarea de estudiar Python a la base.
-
-Intención detectada: ANADIR_TAREAS
-Confianza: 0.83
-Requiere confirmación: True
+[ Entrada de Voz / Audio ]
+           │
+           ▼
+ [ Faster-Whisper (STT) ] ──► Transcripción a texto
+           │
+           ▼
+ [ Clasificador TF-IDF / Cosine ] ──► Detecta Intención / Comando
+           │
+     ┌─────┴──────────────────────────────────┐
+     │                                        │
+     ▼                                        ▼
+[ Modulos Generales ]                 [ Modo Estudio / Académico ]
+(Tareas, YouTube, Info)               ├── Selección de Materia
+                                      ├── Captura / Transcripción de Clase
+                                      ├── Aplicación de Prompt por Materia
+                                      └── Exportación a Obsidian (.md)
